@@ -4,6 +4,7 @@
 #include <iostream>
 #include <ctime> // for seeding time
 #include <cstdlib> // for randoms
+#include <iomanip>
 using namespace std;
 
 const int MIN_NR = 10, MAX_NR = 99, MIN_LS = 5, MAX_LS = 20;
@@ -28,6 +29,10 @@ class Goat {
 
     // parameter constructor
     Goat(int a, string n, string c)  { age = a; name = n; color = c; }
+
+    void print() const {
+        cout << setw(10) << name << " (" << color << ", " << age << ")" << endl;
+    }
     
 };
 
@@ -73,13 +78,13 @@ public:
         }
     }
 
-    void insert_after(int value, int position) {
+    void insert_after(const Goat& goat, int position) {
         if (position < 0) {
             cout << "Position must be >= 0." << endl;
             return;
         }
 
-        Node* newNode = new Node(value);
+        Node* newNode = new Node(goat);
         if (!head) {
             head = tail = newNode;
             return;
@@ -104,34 +109,12 @@ public:
         temp->next = newNode;
     }
 
-    void delete_node(int value) {
-        if (!head) return; // Empty list
-
-        Node* temp = head;
-        while (temp && temp->data != value)
-            temp = temp->next;
-
-        if (!temp) return; // Value not found
-
-        if (temp->prev) {
-            temp->prev->next = temp->next;
-        } else {
-            head = temp->next; // Deleting the head
-        }
-
-        if (temp->next) {
-            temp->next->prev = temp->prev;
-        } else {
-            tail = temp->prev; // Deleting the tail
-        }
-
-        delete temp;
-    }
-
-    void print() {
+    void print() const {
         if (!head) {
             cout << "List is empty!" << endl;
+            return;
         }
+
         Node* current = head;
         if (!current) return;
         while (current) {
@@ -141,10 +124,12 @@ public:
         cout << endl;
     }
 
-    void print_reverse() {
+    void print_reverse() const {
         if (!tail) {
             cout << "List is empty!" << endl;
+            return;
         }
+
         Node* current = tail;
         if (!current) return;
         while (current) {
@@ -178,16 +163,16 @@ int main() {
     }
         
         
-    cout << "List forward: ";
+    cout << "List forward: " << endl;
     list.print();
 
-    cout << "List backward: ";
+    cout << "List backward: " << endl;
     list.print_reverse();
 
-    cout << "Deleting list, then trying to print.\n";
-    list.~DoublyLinkedList();
-    cout << "List forward: ";
-    list.print();
+    //cout << "Deleting list, then trying to print.\n";
+    //list.~DoublyLinkedList();
+    //cout << "List forward: ";
+    //list.print();
 
     return 0;
 }
